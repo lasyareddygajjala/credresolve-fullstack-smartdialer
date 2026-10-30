@@ -1,0 +1,6 @@
+- Two workers reserve one agent: in this prototype the process lock serializes them; in production a transaction/conditional update and unique active reservation constraint must arbitrate.
+- Worker crashes after provider acceptance: durable outbox/inbox, idempotency key, lease expiry and provider reconciliation.
+- Duplicate webhook: unique provider event ID in durable inbox.
+- Out-of-order webhook: legal state transition validation, provider sequence numbers if reliable, reconciliation for ambiguous calls.
+- Provider outage: circuit breaker, pause new starts, bounded exponential retry with jitter; do not retry ambiguous starts without idempotency.
+- Scale bottlenecks: campaign queue contention, DB allocation writes, provider rate limits and webhook throughput; partition queues and backpressure.
